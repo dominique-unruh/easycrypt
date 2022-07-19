@@ -354,6 +354,10 @@ val f_xmax  : form -> form -> form
 val f_x0 : form
 val f_x1 : form
 
+val f_xadd_simpl  : form -> form -> form
+val f_xmul_simpl  : form -> form -> form
+val f_xmuli_simpl : form -> form -> form
+
 (* -------------------------------------------------------------------- *)
 module FSmart : sig
   type a_local  = EcIdent.t * ty

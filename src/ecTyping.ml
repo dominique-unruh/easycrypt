@@ -18,8 +18,6 @@ module Mid   = EcIdent.Mid
 module EqTest = EcReduction.EqTest
 module NormMp = EcEnv.NormMp
 
-module TC = EcTypeClass
-
 (* -------------------------------------------------------------------- *)
 type wp = EcEnv.env -> EcMemory.memenv -> stmt -> form -> form option
 let  wp = (ref (None : wp option))
@@ -845,7 +843,7 @@ let rec check_sig_cnv
                (E_TyModCnv_SubTypeArg(xin, tyout, tyin, err))
          end;
          EcSubst.add_module subst xout (EcPath.mident xin))
-      (EcSubst.empty ()) sin.mis_params sout.mis_params
+      EcSubst.empty sin.mis_params sout.mis_params
   in
   let bout = EcSubst.subst_modsig_body bsubst sout.mis_body
   and rout = EcSubst.subst_mod_restr bsubst sout.mis_restr in
@@ -1136,7 +1134,7 @@ let rec trans_msymbol (env : EcEnv.env) (msymb : pmsymbol located) =
       let subst =
           List.fold_left2
             (fun s (x,_) a -> EcSubst.add_module s x a)
-            (EcSubst.empty ()) params args
+            EcSubst.empty params args
       in
 
       let body = EcSubst.subst_modsig_body subst mod_expr.me_sig_body in
