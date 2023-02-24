@@ -654,6 +654,11 @@ lemma semptyNP ['a] (E : 'a -> bool) :
   !sempty E <=> exists x, E x.
 proof. by rewrite /sempty -negb_exists. qed.
 
+(* -------------------------------------------------------------------- *)
+lemma pred_0Vmem (p : 'a -> bool) : p = pred0 \/ exists x, p x by smt().
+
+(* -------------------------------------------------------------------- *)
+
 (* Locking (use with `rewrite [...]lock /= unlock`) *)
 op locked (x : 'a) = x axiomatized by unlock.
 lemma lock (x : 'a) : x = locked x by rewrite unlock.
