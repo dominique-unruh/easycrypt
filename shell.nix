@@ -1,4 +1,4 @@
-{ withProvers ? false, devDeps ? [] }:
+{ withProvers ? true, devDeps ? [] }:
 
 with import <nixpkgs> {};
 
@@ -19,12 +19,8 @@ let provers =
     z3
   ] else []; in
 
-stdenv.mkDerivation {
-  pname = "easycrypt";
-  version = "git";
-  src = ./.;
-
-  buildInputs = [ git ] ++ (with ocamlPackages; [
+pkgs.mkShell {
+  buildInputs = devDeps ++ [ git ] ++ (with ocamlPackages; [
     ocaml
     findlib
     batteries
@@ -35,18 +31,11 @@ stdenv.mkDerivation {
     inifiles
     menhir
     menhirLib
+    merlin
     yojson
     why3
     zarith
+  ]) ++ (with python3Packages; [
+    pyyaml
   ]);
-
-  propagatedBuildInputs = [ why3 ]
-    ++ devDeps
-    ++ provers;
-
-  installPhase = ''
-    runHook preInstall
-    dune install --prefix $out -p $pname
-    runHook postInstall
-  '';
 }
